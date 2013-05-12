@@ -1,0 +1,13 @@
+
+table.inspector {
+
+}
+
+table.inspector th {
+    text-align: right;
+}
+
+table.inspector th[colspan="2"] {
+    background: #ccc;
+    text-align: left;
+}

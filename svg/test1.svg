@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="42 51 483 199"
+     width="483pt" height="199pt">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:date>2013-05-10 12:04Z</dc:date>
+    <!-- Produced by OmniGraffle Professional 5.4.2 -->
+  </metadata>
+  <defs>
+    <filter id="Shadow" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" result="blur" stdDeviation="3.488"/>
+      <feOffset in="blur" result="offset" dx="0" dy="4"/>
+      <feFlood flood-color="black" flood-opacity=".75" result="flood"/>
+      <feComposite in="flood" in2="offset" operator="in"/>
+    </filter>
+  </defs>
+  <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
+    <title>キャンバス 1</title>
+    <g>
+      <title>レイヤー 1</title>
+      <g>
+        <use xl:href="#id3_Graphic" filter="url(#Shadow)"/>
+        <use xl:href="#id4_Graphic" filter="url(#Shadow)"/>
+      </g>
+      <g id="id3_Graphic">
+        <rect x="62" y="67" width="142" height="139" fill="white"/>
+        <rect x="62" y="67" width="142" height="139" stroke="black" stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="1"/>
+      </g>
+      <g id="id4_Graphic">
+        <a xl:href="#svgView(viewBox(41,36,198,207);preserveAspectRatio(xMidYMid);zoomAndPan(magnify))">
+          <rect x="291" y="132" width="214" height="94" fill="white"/>
+          <rect x="291" y="132" width="214" height="94" stroke="black" stroke-linecap="round" stroke-linejoin="round"
+                stroke-width="1"/>
+        </a>
+      </g>
+    </g>
+  </g>
+</svg>

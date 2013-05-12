@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SVG Architect</title>
+
+    <link rel='stylesheet' type='text/css' href='skin/ui.dynatree.css'>
+    <link rel="stylesheet" type="text/css" href="css/jquery.svg.css">
+    <link rel='stylesheet' type='text/css' href='css/ui-lightness/jquery-ui.custom.css'>
+    <link rel='stylesheet' type='text/css' href='css/inspector.css'>
+
+    <script src='js/jquery.js'></script>
+    <script src='js/jquery-ui.custom.js'></script>
+    <script src='js/jquery.cookie.js'></script>
+    <script src='js/jquery.dynatree.js'></script>
+    <script src="js/jquery.svg.js"></script>
+    <script src="js/jquery.svganim.js"></script>
+    <script src="js/jquery.easing.js"></script>
+    <script src="js/modcoder_excolor/jquery.modcoder.excolor.js"></script>
+
+    <script src="main.js"></script>
+    <script src='inspector.js'></script>
+    <script src='inspector_specs.js'></script>
+</head>
+<body>
+
+<div id="main" style="width: 100%; margin: 0, auto;">
+    <div id="header" style="background: #eee;">
+        <h1>SVG Architect</h1>
+    </div>
+    <div id="left" style="float: left; width: 200px; background: #fee;">
+        <button id="clear">Clear</button>
+        <br />
+        Upload:<input id="upload" type="file"></input>
+        <button id="download">Download</button>
+        <br />
+        <button id="add_rect">Rect</button>
+        <button id="add_circle">Circle</button>
+        <button id="add_text">Text</button>
+        Image:<input id="add_image" type="file"></input>
+        <button id="add_group">Group</button>
+        <button id="debug">Debug</button>
+        <div id="svg_tree" style="height: 400px; overflow: scroll;"></div>
+    </div>
+    <div id="right" style="float: right; width: 250px; background: #eef;">
+        <!-- <iframe seamless width="250px" height="600px"></iframe> -->
+        <div id="properties">
+        </div>
+        <div id="transforms">
+        </div>
+        <div id="others">
+        </div>
+    </div>
+    <div id="contents">
+        <div id="svg" style="margin: 0 200px; height: 600px; overflow: scroll; background: #efe;"></div>
+    </div>
+    <div id="footer" style="background: #eee;">Copyright 2013 Yuichi Kobayashi</div>
+</div>
+
+</body>
+</html>
