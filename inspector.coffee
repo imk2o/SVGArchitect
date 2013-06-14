@@ -1,4 +1,3 @@
-
 class Inspector
   constructor: ($div, @$element, clear) ->
     if clear?
@@ -127,7 +126,7 @@ createRow = (table$, label, content) ->
   $('<th />').append(label).appendTo(tr$)
   return $('<td />').append(content).appendTo(tr$)
 
-inspectCurrentElement = (properties) ->
+@inspectCurrentElement = (properties) ->
   element$ = currentElement$()
   e = element$[0]
 

@@ -1,4 +1,4 @@
-inspector_specs = {
+@inspector_specs = {
   rect:
     [{field: 'section', label: 'Geometry'},
     {field: 'text', id: 'x', label: 'X'},
