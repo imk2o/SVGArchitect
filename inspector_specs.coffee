@@ -37,6 +37,15 @@ inspector_specs = {
     {field: 'section', label: 'Fill'},
     {field: 'color', id: 'fill', label: 'Color'},
     {field: 'slider', id: 'opacity', label: 'Opacity'}]
+  path:
+    [{field: 'section', label: 'Geometry'},
+    {field: 'text', id: 'd', label: 'D'},
+    {field: 'section', label: 'Stroke'},
+    {field: 'color', id: 'stroke', label: 'Color'},
+    {field: 'selector', id: 'stroke-width', label: 'Width', items: [1, 2, 3, 4, 5]},
+    {field: 'section', label: 'Fill'},
+    {field: 'color', id: 'fill', label: 'Color'},
+    {field: 'slider', id: 'opacity', label: 'Opacity'}]
   image:
     [{field: 'section', label: 'Geometry'},
     {field: 'text', id: 'x', label: 'X'},

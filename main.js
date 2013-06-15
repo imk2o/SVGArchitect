@@ -4,6 +4,7 @@ function isClickableElement(element) {
         rect: true,
         circle: true,
         text: true,
+        path: true,
         image: true
     };
 
