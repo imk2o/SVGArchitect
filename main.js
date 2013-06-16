@@ -58,6 +58,17 @@ function randColor() {
     return '#' + r.toString(16) + g.toString(16) + b.toString(16);
 }
 
+// 一意な ID を生成する
+function createUniqueId(prefix) {
+    var n = 1;
+    do {
+        var id = prefix + n
+        n++;
+        var l = $('#' + id).length;
+    } while ($('#' + id).length);
+    return id;
+}
+
 $(function(){    // body onload
     var svg = $('#svg').svg({settings: {
         xmlns: 'http://www.w3.org/2000/svg',
@@ -88,6 +99,8 @@ $(function(){    // body onload
     var root = $('#svg_tree').dynatree('getRoot');
     var top = createElementNode(root, svg.root(), {folder: true, clickable: false});
     top.activate();
+    // defs ノードを生成
+    var defs = createElementNode(top, function(parent) { return svg.defs(parent); }, {folder: true, clickable: false});
 
     // クリア
     $('#clear').click(function() {
@@ -205,18 +218,48 @@ $(function(){    // body onload
         reader.readAsDataURL(e.target.files[0]);
     });
 
+    // グループの追加
     $('#add_group').click(function() {
         var parent_node = parentNode();
         var node = createElementNode(parent_node, function(parent) {
+            var id = createUniqueId('group');
             var fill = randColor();
             var stroke = randColor();
             var stroke_width = rand(1, 5);
-            return svg.group(parent, 'xxx', {    // TODO
+            return svg.group(parent, id, {
                 fill: fill,
                 stroke: stroke,
                 strokeWidth: stroke_width,
                 opacity: 1.0
             });
+        }, {folder: true, clickable: false});
+
+        parent_node.expand();
+        node.activate();
+    });
+
+    // グラデーション(linear)の追加
+    $('#add_linear_gradient').click(function() {
+        var parent_node = defs;//parentNode();
+        var node = createElementNode(parent_node, function(parent) {
+            var id = createUniqueId('grad');
+            var start_color = randColor();
+            var end_color = randColor();
+            return svg.linearGradient(parent, id, [[0.0, start_color, 1.0], [1.0, end_color, 1.0]], {gradientUnits: 'objectBoundingBox'});
+        }, {folder: true, clickable: false});
+
+        parent_node.expand();
+        node.activate();
+    });
+
+    // グラデーション(radial)の追加
+    $('#add_radial_gradient').click(function() {
+        var parent_node = defs;//parentNode();
+        var node = createElementNode(parent_node, function(parent) {
+            var id = createUniqueId('grad');
+            var start_color = randColor();
+            var end_color = randColor();
+            return svg.radialGradient(parent, id, [[0.0, start_color, 1.0], [1.0, end_color, 1.0]], {gradientUnits: 'objectBoundingBox'});
         }, {folder: true, clickable: false});
 
         parent_node.expand();

@@ -6,17 +6,19 @@ class Inspector
 
   addField: (label, field) ->
     $tr = $('<tr />').appendTo(@$table)
-    $th = $('<th />').append(label).appendTo($tr)
+    if label?
+      $row = $th = $('<th />').append(label).appendTo($tr)
     if field?
-      $('<td />').append(field).appendTo($tr)
-    else
-      $th.attr('colspan', '2')
+      $row = $td = $('<td />').append(field).appendTo($tr)
+
+    unless $th? && $td?
+      $row.attr('colspan', '2')
 
   addSection: (label) ->
     @addField(label)
 
   addInnerTextField: (label) ->
-    field = "<input id=\"inner-text\" class=\"text\" type=\"text\"></input>"
+    field = "<textarea id=\"inner-text\" class=\"text\" />"
     @addField(label, field)
 
     # bind
@@ -25,21 +27,23 @@ class Inspector
       .val(element.text())
       .change -> element.text($(this).val())
 
-  addTextField: (id, label, attr) ->
-    attr ?= id
-    field = "<input id=\"#{id}\" class=\"text\" type=\"text\"></input>"
+  addTextField: (id, label, option) ->
+    if option?.rows? > 1
+      field = "<textarea id=\"#{id}\" class=\"text\" rows=\"#{option.rows}\" />"
+    else
+      field = "<input id=\"#{id}\" class=\"text\" type=\"text\"></input>"
     @addField(label, field)
-    bindText(@$element, id)
+    bindText(@$element, id, option.attr if option?)
 
   addColorPicker: (id, label) ->
     field = "<input id=\"#{id}\" class=\"color\" type=\"text\">"
     @addField(label, field)
     bindColor(@$element, id)
 
-  addSlider: (id, label) ->
+  addSlider: (id, label, option) ->
     field = "<div id=\"#{id}\" class=\"slider\">"
     @addField(label, field)
-    bindSlider(@$element, id)
+    bindSlider(@$element, id, option)
 
   addSelector: (id, label, items) ->
     $select = $("<select id=\"#{id}\" class=\"selector\">")
@@ -87,13 +91,16 @@ bindColor = (element, id, attr) ->
     .change(-> element.attr(attr, $(this).val()))
     .modcoder_excolor({callback_on_ok: -> element.attr(attr, $('#' + id).val())})
 
-bindSlider = (element, id, attr) ->
-  attr ?= id
+bindSlider = (element, id, option = {}) ->
+  option.attr ?= id
+  option.min ?= 0.0
+  option.max ?= 1.0
+  option.step ?= 0.01
 
   $('#' + id)
-    .slider({min: 0.0, max: 1.0, step: 0.01})
-    .slider('value', element.attr(attr))
-    .slider({change: (e, ui) -> element.attr(attr, ui.value)})
+    .slider({min: option.min, max: option.max, step: option.step})
+    .slider('value', element.attr(option.attr))
+    .slider({change: (e, ui) -> element.attr(option.attr, ui.value)})
 
 bindTranslate = ($container, svg_tr) ->
   # matrix を変更すると type が変わってしまうので、setTranslate() を使う
@@ -130,6 +137,7 @@ createRow = (table$, label, content) ->
   element$ = currentElement$()
   e = element$[0]
 
+  inner_text_presented = false
   presented_attrs = {}
   inspector = new Inspector($('#properties'), element$, true)
   for property in properties
@@ -140,11 +148,13 @@ createRow = (table$, label, content) ->
 
     switch property.field
       when 'section' then inspector.addSection(property.label)
-      when 'text' then inspector.addTextField(property.id, property.label)
+      when 'text' then inspector.addTextField(property.id, property.label, property.option)
       when 'color' then inspector.addColorPicker(property.id, property.label)
-      when 'slider' then inspector.addSlider(property.id, property.label)
+      when 'slider' then inspector.addSlider(property.id, property.label, property.option)
       when 'selector' then inspector.addSelector(property.id, property.label, property.items)
-      when 'inner-text' then inspector.addInnerTextField(property.label)
+      when 'inner-text'
+        inspector.addInnerTextField(property.label)
+        inner_text_presented = true
       when 'file' then inspector.addFileSelector(property.id, property.label, property.attr)
 
   createTranslateInspector = (tr) ->
@@ -166,9 +176,10 @@ createRow = (table$, label, content) ->
     bindRotate($container, tr)
 
   transform_inspector = new Inspector($('#transforms'), element$, true)
-  transform_inspector.addSection('Transforms')
-  if e.transform?
-    trs = e.transform.baseVal
+  e_tr = e.transform || e.gradientTransform
+  if e_tr
+    transform_inspector.addSection('Transforms')
+    trs = e_tr.baseVal
     if trs.numberOfItems
       for i in [0..trs.numberOfItems - 1]
         tr = trs.getItem(i)
@@ -182,30 +193,32 @@ createRow = (table$, label, content) ->
       tr = e.ownerSVGElement.createSVGTransform()
       tr.setTranslate(0, 0)
       createTranslateInspector(tr)
-      e.transform.baseVal.appendItem(tr)
-
+      e_tr.baseVal.appendItem(tr)
     $('<button>Add Rotate</button>').appendTo('#transforms').click ->
       e = element$[0]
       tr = e.ownerSVGElement.createSVGTransform()
       tr.setRotate(0, 0, 0)
       createRotateInspector(tr)
-      e.transform.baseVal.appendItem(tr)
-
+      e_tr.baseVal.appendItem(tr)
     $('<button>Add Scale</button>').appendTo('#transforms').click ->
       e = element$[0]
       tr = e.ownerSVGElement.createSVGTransform()
       tr.setScale(1, 1)
       createScaleInspector(tr)
-      e.transform.baseVal.appendItem(tr)
+      e_tr.baseVal.appendItem(tr)
 
   other_inspector = new Inspector($('#others'), element$, true)
-  other_inspector.addSection('Other Attributes')
-  for i in [0..(e.attributes.length - 1)]
-    attr_name = e.attributes[i].name
-    if presented_attrs[attr_name]
-      continue
-    id = attr_name.replace(':', '-')    # namespace セパレータを回避
-    label = attr_name
-    other_inspector.addTextField(id, label, attr_name)
+  unless inner_text_presented
+    other_inspector.addSection('Inner Text')
+    other_inspector.addInnerTextField()
+  if e.attributes.length > 0
+    other_inspector.addSection('Other Attributes')
+    for i in [0..(e.attributes.length - 1)]
+      attr_name = e.attributes[i].name
+      if presented_attrs[attr_name]
+        continue
+      id = attr_name.replace(':', '-')    # namespace セパレータを回避
+      label = attr_name
+      other_inspector.addTextField(id, label, {attr: attr_name})
 
 #$(inspectCurrentElement())

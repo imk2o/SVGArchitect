@@ -7,7 +7,7 @@
     {field: 'text', id: 'height', label: 'Height'},
     {field: 'section', label: 'Stroke'},
     {field: 'color', id: 'stroke', label: 'Color'},
-    {field: 'selector', id: 'stroke-width', label: 'Width', items: [1, 2, 3, 4, 5]},
+    {field: 'slider', id: 'stroke-width', label: 'Width', option: {min: 1, max: 10, step: 1}},
     {field: 'section', label: 'Fill'},
     {field: 'color', id: 'fill', label: 'Color'},
     {field: 'slider', id: 'opacity', label: 'Opacity'}]
@@ -18,7 +18,7 @@
     {field: 'text', id: 'r', label: 'Radius'},
     {field: 'section', label: 'Stroke'},
     {field: 'color', id: 'stroke', label: 'Color'},
-    {field: 'selector', id: 'stroke-width', label: 'Width', items: [1, 2, 3, 4, 5]},
+    {field: 'slider', id: 'stroke-width', label: 'Width', option: {min: 1, max: 10, step: 1}},
     {field: 'section', label: 'Fill'},
     {field: 'color', id: 'fill', label: 'Color'},
     {field: 'slider', id: 'opacity', label: 'Opacity'}]
@@ -33,16 +33,16 @@
     {field: 'text', id: 'font-size', label: 'Size'},
     {field: 'section', label: 'Stroke'},
     {field: 'color', id: 'stroke', label: 'Color'},
-    {field: 'selector', id: 'stroke-width', label: 'Width', items: [0, 1, 2, 3, 4, 5]},
+    {field: 'slider', id: 'stroke-width', label: 'Width', option: {min: 1, max: 10, step: 1}},
     {field: 'section', label: 'Fill'},
     {field: 'color', id: 'fill', label: 'Color'},
     {field: 'slider', id: 'opacity', label: 'Opacity'}]
   path:
     [{field: 'section', label: 'Geometry'},
-    {field: 'text', id: 'd', label: 'D'},
+    {field: 'text', id: 'd', option:{rows: 4}},
     {field: 'section', label: 'Stroke'},
     {field: 'color', id: 'stroke', label: 'Color'},
-    {field: 'selector', id: 'stroke-width', label: 'Width', items: [1, 2, 3, 4, 5]},
+    {field: 'slider', id: 'stroke-width', label: 'Width', option: {min: 1, max: 10, step: 1}},
     {field: 'section', label: 'Fill'},
     {field: 'color', id: 'fill', label: 'Color'},
     {field: 'slider', id: 'opacity', label: 'Opacity'}]
@@ -59,8 +59,12 @@
   g:
     [{field: 'section', label: 'Stroke'},
     {field: 'color', id: 'stroke', label: 'Color'},
-    {field: 'selector', id: 'stroke-width', label: 'Width', items: [1, 2, 3, 4, 5]},
+    {field: 'slider', id: 'stroke-width', label: 'Width', option: {min: 1, max: 10, step: 1}},
     {field: 'section', label: 'Fill'},
     {field: 'color', id: 'fill', label: 'Color'},
     {field: 'slider', id: 'opacity', label: 'Opacity'}]
+  stop:
+    [{field: 'slider', id: 'offset', label: 'Offset'},
+    {field: 'color', id: 'stop-color', label: 'Color'},
+    {field: 'slider', id: 'stop-opacity', label: 'Opacity'}]
 }
