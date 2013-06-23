@@ -33,7 +33,7 @@ class Inspector
     else
       field = "<input id=\"#{id}\" class=\"text\" type=\"text\"></input>"
     @addField(label, field)
-    bindText(@$element, id, option.attr if option?)
+    bindText(@$element, id, option)
 
   addColorPicker: (id, label) ->
     field = "<input id=\"#{id}\" class=\"color\" type=\"text\">"
@@ -41,9 +41,11 @@ class Inspector
     bindColor(@$element, id)
 
   addSlider: (id, label, option) ->
-    field = "<div id=\"#{id}\" class=\"slider\">"
+    id_for_tf = "#{id}_text"
+    field = "<div id=\"#{id}\" class=\"slider\" style=\"float: left; width: 60%;\" /><input id=\"#{id_for_tf}\" type=\"text\" style=\"width: 4em;\" />"
     @addField(label, field)
     bindSlider(@$element, id, option)
+    bindText(@$element, id_for_tf, {attr: id})
 
   addSelector: (id, label, items) ->
     $select = $("<select id=\"#{id}\" class=\"selector\">")
@@ -76,12 +78,12 @@ currentElement$ = ->
   node = $('#svg_tree').dynatree('getActiveNode')
   return $(node.data.element)
 
-bindText = (element, id, attr) ->
-  attr ?= id
+bindText = (element, id, option = {}) ->
+  option.attr ?= id
 
   $("##{id}")
-    .val(element.attr(attr))
-    .change -> element.attr(attr, $(this).val())
+    .val(element.attr(option.attr))
+    .change -> element.attr(option.attr, $(this).val())
 
 bindColor = (element, id, attr) ->
   attr ?= id
